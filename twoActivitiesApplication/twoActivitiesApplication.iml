@@ -4,7 +4,6 @@
     <facet type="android" name="Android">
       <configuration>
         <option name="APK_PATH" value="/target/twoActivitiesApplication.apk" />
-        <option name="UPDATE_PROPERTY_FILES" value="true" />
         <option name="COMPILE_CUSTOM_GENERATED_SOURCES" value="false" />
         <resOverlayFolders>
           <path>/res-overlay</path>
@@ -35,4 +34,3 @@
     <orderEntry type="library" name="Maven: com.android.support:support-annotations:21.0.2" level="project" />
   </component>
 </module>
-
