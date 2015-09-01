@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">twoActivitiesApplication</string>
+    <string name="app_name">TEST</string>
+    <string name="first_activity_text">First Activity</string>
+    <string name="second_activity_text">Second Activity</string>
+    <string name="first_activity_button_name">To Second Activity</string>
 </resources>

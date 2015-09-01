@@ -5,18 +5,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/first_activity_text"
-            android:id="@+id/textView_first"
-            android:layout_gravity="center_horizontal"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/first_activity_button_name"
-            android:id="@+id/button_first"
+            android:text="@string/second_activity_text"
+            android:id="@+id/textView_second"
             android:layout_gravity="center_horizontal"/>
 </LinearLayout>

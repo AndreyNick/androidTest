@@ -11,8 +11,6 @@ import android.widget.EditText;
 import com.android.test.officeCrimesHolder.R;
 import com.android.test.officeCrimesHolder.domain.Crime;
 
-
-
 public class CrimeFragment extends Fragment {
     private Crime crime;
     private EditText textField;
@@ -23,7 +21,7 @@ public class CrimeFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState){
-        View v = this.getLayoutInflater(savedInstanceState).inflate(R.layout.fragment_crime, parent, false);  //TODO it have to be inflater.inflate
+        View v = layoutInflater.inflate(R.layout.fragment_crime, parent, false);
         textField = (EditText)v.findViewById(R.id.crime_title);
         textField.addTextChangedListener(new TextWatcher() {
             @Override

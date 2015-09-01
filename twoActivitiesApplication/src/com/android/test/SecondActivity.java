@@ -1,33 +1,21 @@
 package com.android.test;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 /**
- * Created by anni0913 on 31.08.2015.
+ * Created by anni0913 on 01.09.2015.
  */
-public class FirstActivity extends Activity {
-    private static final String TAG = "First Activity";
-    private Button toSecondActivityButton;
+public class SecondActivity extends Activity {
 
+    private static final String TAG = "Second Activity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called");
-        setContentView(R.layout.activity_first);
-        toSecondActivityButton = (Button) findViewById(R.id.button_first);
-        toSecondActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(FirstActivity.this, SecondActivity.class);
-                startActivity(i);
-            }
-        });
+        setContentView(R.layout.activity_second);
     }
 
     @Override
