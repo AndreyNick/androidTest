@@ -16,6 +16,11 @@ public class Crime {
         date = new Date(System.currentTimeMillis());
     }
 
+    public Crime(String title, boolean solved) {
+        this.title = title;
+        this.solved = solved;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -42,5 +47,10 @@ public class Crime {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return title;
     }
 }
