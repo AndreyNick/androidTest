@@ -19,6 +19,8 @@ public class Crime {
     public Crime(String title, boolean solved) {
         this.title = title;
         this.solved = solved;
+        id = UUID.randomUUID();
+        date = new Date(System.currentTimeMillis());
     }
 
     public UUID getId() {

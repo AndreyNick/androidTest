@@ -1,6 +1,6 @@
 package com.android.test.officeCrimesHolder.fragment;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -10,10 +10,10 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.android.test.officeCrimesHolder.R;
+import com.android.test.officeCrimesHolder.activity.CrimeActivity;
 import com.android.test.officeCrimesHolder.domain.Crime;
 import com.android.test.officeCrimesHolder.domain.CrimeLab;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CrimeListFragment extends ListFragment {
@@ -32,6 +32,9 @@ public class CrimeListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         Crime crime = ((CrimeAdapter)getListAdapter()).getItem(position);
+        Intent intent = new Intent(getActivity(), CrimeActivity.class);
+        intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
+        startActivity(intent);
     }
 
     private class CrimeAdapter extends ArrayAdapter<Crime> {
@@ -49,7 +52,7 @@ public class CrimeListFragment extends ListFragment {
             TextView titleTextView = (TextView)view.findViewById(R.id.list_item_crime_text_view_title);
             titleTextView.setText(crime.getTitle());
             TextView dateTextView = (TextView)view.findViewById(R.id.list_item_crime_text_view_date);
-            dateTextView.setText(/*crime.getDate().toString()*/"bla-bla date");
+            dateTextView.setText(crime.getDate().toString());
             CheckBox solvedCheckBox = (CheckBox)view.findViewById(R.id.list_item_crime_checkbox);
             solvedCheckBox.setChecked(crime.getSolved());
 
