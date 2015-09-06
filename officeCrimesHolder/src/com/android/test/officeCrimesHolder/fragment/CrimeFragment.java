@@ -2,6 +2,7 @@ package com.android.test.officeCrimesHolder.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
     public static final String CRIME_ID = "com.android.test.officeCrimesHolder.fragment.CrimeFragment.crime_id";
+    private static final String DIALOG_DATE = "date";
     private Crime crime;
 
     @Override
@@ -53,7 +55,15 @@ public class CrimeFragment extends Fragment {
         });
         Button dateButton = (Button) v.findViewById(R.id.crime_date);
         dateButton.setText(DateFormat.format("dd.mm.yy",crime.getDate()));
-        dateButton.setEnabled(false);
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(fragmentManager, DIALOG_DATE);
+
+            }
+        });
         CheckBox solvedCheckbox = (CheckBox) v.findViewById(R.id.crime_solved);
         solvedCheckbox.setChecked(crime.getSolved());
         solvedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
