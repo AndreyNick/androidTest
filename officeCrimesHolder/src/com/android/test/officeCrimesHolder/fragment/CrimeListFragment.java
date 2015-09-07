@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.format.DateFormat;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.android.test.officeCrimesHolder.R;
 import com.android.test.officeCrimesHolder.activity.CrimeActivity;
+import com.android.test.officeCrimesHolder.activity.CrimeListActivity;
 import com.android.test.officeCrimesHolder.domain.Crime;
 import com.android.test.officeCrimesHolder.domain.CrimeLab;
 
@@ -25,6 +25,7 @@ public class CrimeListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.crimes_title);
+        setHasOptionsMenu(true);
         crimesList = CrimeLab.getInstance(getActivity()).getAllCrimes();
         CrimeAdapter crimeAdapter = new CrimeAdapter(crimesList);
         setListAdapter(crimeAdapter);
@@ -36,6 +37,27 @@ public class CrimeListFragment extends ListFragment {
         Intent intent = new Intent(getActivity(), CrimeActivity.class);
         intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
         startActivity(intent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+        menuInflater.inflate(R.menu.fragment_crime_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_item_new_crime:
+                Crime crime = new Crime();
+                CrimeLab.getInstance(getActivity()).addCrime(crime);
+                Intent intent = new Intent(getActivity(), CrimeListActivity.class);
+                intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
+                startActivityForResult(intent, 0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private class CrimeAdapter extends ArrayAdapter<Crime> {

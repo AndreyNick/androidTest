@@ -14,7 +14,7 @@ public class CrimeLab {
     private CrimeLab(Context appContext) {
         this.appContext = appContext;
         crimesList = new ArrayList<Crime>();
-        setTestCrimes();
+        //setTestCrimes();
     }
 
     public static CrimeLab getInstance(Context context) {
@@ -33,6 +33,10 @@ public class CrimeLab {
             if(crime.getId().equals(id)) return crime;
         }
         return null;
+    }
+
+    public void addCrime(Crime crime) {
+        crimesList.add(crime);
     }
 
     private void setTestCrimes() {
