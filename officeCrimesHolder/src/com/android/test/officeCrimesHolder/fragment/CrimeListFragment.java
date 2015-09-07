@@ -3,6 +3,7 @@ package com.android.test.officeCrimesHolder.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -52,10 +53,9 @@ public class CrimeListFragment extends ListFragment {
             TextView titleTextView = (TextView)view.findViewById(R.id.list_item_crime_text_view_title);
             titleTextView.setText(crime.getTitle());
             TextView dateTextView = (TextView)view.findViewById(R.id.list_item_crime_text_view_date);
-            dateTextView.setText(crime.getDate().toString());
+            dateTextView.setText(DateFormat.format("dd.MM.yy", crime.getDate()));
             CheckBox solvedCheckBox = (CheckBox)view.findViewById(R.id.list_item_crime_checkbox);
             solvedCheckBox.setChecked(crime.getSolved());
-
             return view;
         }
     }
