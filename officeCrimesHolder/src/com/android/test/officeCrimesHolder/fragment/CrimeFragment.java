@@ -1,11 +1,13 @@
 package com.android.test.officeCrimesHolder.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -54,16 +56,23 @@ public class CrimeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case android.R.id.home:
+                if(NavUtils.getParentActivityName(getActivity()) != null) {
+                    NavUtils.navigateUpFromSameTask(getActivity());
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
     }
 
+    @TargetApi(11)
+    @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState){
         View v = layoutInflater.inflate(R.layout.fragment_crime, parent, false);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+            if(NavUtils.getParentActivityName(getActivity()) != null) {
+                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
         EditText textField = (EditText) v.findViewById(R.id.crime_title);
         textField.setText(crime.getTitle());

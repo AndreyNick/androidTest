@@ -1,6 +1,8 @@
 package com.android.test.officeCrimesHolder.fragment;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.format.DateFormat;
@@ -20,15 +22,31 @@ import java.util.List;
 public class CrimeListFragment extends ListFragment {
 
     private List<Crime> crimesList;
+    private boolean subtitleVisible;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.crimes_title);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
+        subtitleVisible = false;
         crimesList = CrimeLab.getInstance(getActivity()).getAllCrimes();
         CrimeAdapter crimeAdapter = new CrimeAdapter(crimesList);
         setListAdapter(crimeAdapter);
+    }
+
+    @TargetApi(11)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, parent, savedInstanceState);
+        //getListView().setEmptyView(inflater.inflate(R.layout.empty_list_view, parent));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if(subtitleVisible) {
+                getActivity().getActionBar().setSubtitle(R.string.subtitle);
+            }
+        }
+        return view;
     }
 
     @Override
@@ -43,6 +61,10 @@ public class CrimeListFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.fragment_crime_list, menu);
+        MenuItem showSubtitle = menu.findItem(R.id.menu_item_show_subtitle);
+        if(subtitleVisible && showSubtitle != null) {
+            showSubtitle.setTitle(R.string.hide_subtitle);
+        }
     }
 
     @Override
@@ -55,6 +77,16 @@ public class CrimeListFragment extends ListFragment {
                 intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
                 startActivityForResult(intent, 0);
                 return true;
+            case R.id.menu_item_show_subtitle:
+                if(getActivity().getActionBar().getSubtitle() == null) {
+                    getActivity().getActionBar().setSubtitle(R.string.subtitle);
+                    subtitleVisible = true;
+                    item.setTitle(R.string.hide_subtitle);
+                } else {
+                    getActivity().getActionBar().setSubtitle(null);
+                    subtitleVisible = false;
+                    item.setTitle(R.string.show_subtitle);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -80,5 +112,6 @@ public class CrimeListFragment extends ListFragment {
             solvedCheckBox.setChecked(crime.getSolved());
             return view;
         }
+
     }
 }
