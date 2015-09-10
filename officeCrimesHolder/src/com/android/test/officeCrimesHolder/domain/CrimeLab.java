@@ -8,18 +8,18 @@ import java.util.UUID;
 
 public class CrimeLab {
     private static CrimeLab crimeLab;
-    private Context appContext;
+    //private Context appContext;
     private List<Crime> crimesList;
 
-    private CrimeLab(Context appContext) {
-        this.appContext = appContext;
+    private CrimeLab() {
+        //this.appContext = appContext;
         crimesList = new ArrayList<Crime>();
         //setTestCrimes();
     }
 
-    public static CrimeLab getInstance(Context context) {
+    public static CrimeLab getInstance() {
         if(crimeLab == null){
-            crimeLab = new CrimeLab(context.getApplicationContext());
+            crimeLab = new CrimeLab();
         }
         return crimeLab;
     }
@@ -39,8 +39,8 @@ public class CrimeLab {
         crimesList.add(crime);
     }
 
-    private void setTestCrimes() {
+    /*private void setTestCrimes() {
         crimesList.add(new Crime("Test crime #1", true));
         crimesList.add(new Crime("Test crime #2", false));
-    }
+    }*/
 }

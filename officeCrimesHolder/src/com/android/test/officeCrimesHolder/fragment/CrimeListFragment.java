@@ -27,26 +27,27 @@ public class CrimeListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.crimes_title);
+        //getActivity().setTitle(R.string.crimes_title);
         setHasOptionsMenu(true);
         setRetainInstance(true);
         subtitleVisible = false;
-        crimesList = CrimeLab.getInstance(getActivity()).getAllCrimes();
+        crimesList = CrimeLab.getInstance().getAllCrimes();
         CrimeAdapter crimeAdapter = new CrimeAdapter(crimesList);
         setListAdapter(crimeAdapter);
     }
 
-    @TargetApi(11)
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, parent, savedInstanceState);
-        //getListView().setEmptyView(inflater.inflate(R.layout.empty_list_view, parent));
+        //View view = super.onCreateView(inflater, parent, savedInstanceState);
+        //for the regular ListFragment ListView adding
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if(subtitleVisible) {
                 getActivity().getActionBar().setSubtitle(R.string.subtitle);
             }
         }
-        return view;
+        return inflater.inflate(R.layout.fragment_list_crime, null);
     }
 
     @Override
@@ -67,12 +68,15 @@ public class CrimeListFragment extends ListFragment {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    //Overall we don't need this annotation above
+    //because 'Subtitle' button is in fragment_crime_list.xml menu for API above 11 only
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_item_new_crime:
                 Crime crime = new Crime();
-                CrimeLab.getInstance(getActivity()).addCrime(crime);
+                CrimeLab.getInstance().addCrime(crime);
                 Intent intent = new Intent(getActivity(), CrimeListActivity.class);
                 intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
                 startActivityForResult(intent, 0);

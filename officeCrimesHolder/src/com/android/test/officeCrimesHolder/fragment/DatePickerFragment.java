@@ -21,6 +21,7 @@ public class DatePickerFragment extends DialogFragment {
 
     public static final String EXTRA_DATE = "com.android.test.officeCrimesHolder.fragment.DatePickerFragment.date";
     private Date date;
+    private final static String TAG = "DatePickerFragment";
 
     public static DatePickerFragment getInstance(Date date) {
         Bundle args = new Bundle();

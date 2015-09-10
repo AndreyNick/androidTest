@@ -32,6 +32,7 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     private Crime crime;
     private Button dateButton;
+    private final static String TAG = "CrimeFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -39,13 +40,12 @@ public class CrimeFragment extends Fragment {
         setHasOptionsMenu(true);
         UUID crimeId = (UUID)getActivity().getIntent()
                 .getSerializableExtra(CRIME_ID);
-        crime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
+        crime = CrimeLab.getInstance().getCrime(crimeId);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if(requestCode != Activity.RESULT_OK) return;
-        if(requestCode == REQUEST_DATE){
+        if(requestCode == Activity.RESULT_OK){
             Date date = (Date) intent.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             crime.setDate(date);
             updateDate();
