@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import com.android.test.officeCrimesHolder.R;
@@ -45,7 +47,7 @@ public class DatePickerFragment extends DialogFragment {
         datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker datePicker, int i, int i2, int i3) {
-                date = new GregorianCalendar(year, month, day).getTime();
+                date = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), day).getTime();
                 getArguments().putSerializable(EXTRA_DATE, date);
                 //we need it in case of screen rotation
             }
@@ -63,9 +65,13 @@ public class DatePickerFragment extends DialogFragment {
     }
 
     private void sendResult(int resultCode) {
+        Log.d(TAG, "Send result START ");
         if(getTargetFragment() == null) return;
+        Fragment fragment = getTargetFragment();
+        Log.d(TAG, "getTargetFragment: "  + fragment.toString());
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);
+        Log.d(TAG, "Send result: " + date.toString() + "Result code: " + resultCode);
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }

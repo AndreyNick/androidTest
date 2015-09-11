@@ -11,6 +11,7 @@ import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,8 +46,10 @@ public class CrimeFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if(requestCode == Activity.RESULT_OK){
+        Log.d(TAG, "onActivityResult, request code: " + requestCode + " result code: " + requestCode );
+        if(/*requestCode == Activity.RESULT_OK*/true){
             Date date = (Date) intent.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            Log.d(TAG, "onActivityResult: " + date.toString());
             crime.setDate(date);
             updateDate();
         }
@@ -116,6 +119,7 @@ public class CrimeFragment extends Fragment {
     }
 
     private void updateDate() {
+        Log.d(TAG, "updateDate: " + crime.getDate().toString());
         dateButton.setText(DateFormat.format("dd.MM.yy",crime.getDate()));
     }
 }

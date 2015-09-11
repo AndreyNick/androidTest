@@ -36,6 +36,7 @@ public class CrimeListFragment extends ListFragment {
         setListAdapter(crimeAdapter);
     }
 
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
