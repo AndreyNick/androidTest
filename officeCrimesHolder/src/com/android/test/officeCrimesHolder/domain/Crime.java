@@ -1,9 +1,17 @@
 package com.android.test.officeCrimesHolder.domain;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.UUID;
 
 public class Crime {
+
+    private static final String ID = "id";
+    private static final String TITLE = "title";
+    private static final String SOLVED = "solved";
+    private static final String DATE = "date";
 
     private UUID id;
     private String title;
@@ -21,6 +29,15 @@ public class Crime {
         this.solved = solved;
         id = UUID.randomUUID();
         date = new Date(System.currentTimeMillis());
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(ID, id.toString());
+        json.put(TITLE, title);
+        json.put(SOLVED, solved);
+        json.put(DATE, date.getTime());
+        return json;
     }
 
     public UUID getId() {
