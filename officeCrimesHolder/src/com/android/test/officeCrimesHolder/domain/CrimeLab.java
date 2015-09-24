@@ -16,17 +16,25 @@ public class CrimeLab {
     private static CrimeLab crimeLab;
 
     private CriminalIntentJsonSerializer serializer;
-    private Context appContext;
+    private Context context;
+
     private ArrayList<Crime> crimesList;
 
-    private CrimeLab() {
-        //this.appContext = appContext;
+    private CrimeLab(Context context) {
+        this.context = context;
         crimesList = new ArrayList<Crime>();
+        serializer = new CriminalIntentJsonSerializer(context, FILENAME);
+        try {
+            crimesList = serializer.loadCrimes();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "Error loading crimes: ", e);
+        }
     }
 
-    public static CrimeLab getInstance() {
+    public static CrimeLab getInstance(Context context) {
         if(crimeLab == null){
-            crimeLab = new CrimeLab();
+            crimeLab = new CrimeLab(context);
         }
         return crimeLab;
     }
@@ -55,6 +63,10 @@ public class CrimeLab {
 
     public void addCrime(Crime crime) {
         crimesList.add(crime);
+    }
+
+    public void deleteCrime(Crime crime) {
+        crimesList.remove(crime);
     }
 
 

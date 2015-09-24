@@ -41,13 +41,13 @@ public class CrimeFragment extends Fragment {
         setHasOptionsMenu(true);
         UUID crimeId = (UUID)getActivity().getIntent()
                 .getSerializableExtra(CRIME_ID);
-        crime = CrimeLab.getInstance().getCrime(crimeId);
+        crime = CrimeLab.getInstance(getActivity()).getCrime(crimeId);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         Log.d(TAG, "onActivityResult, request code: " + requestCode + " result code: " + requestCode );
-        if(/*requestCode == Activity.RESULT_OK*/true){
+        if(/*requestCode == Activity.RESULT_OK*/true){       //TODO It should works, but it doesn't
             Date date = (Date) intent.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             Log.d(TAG, "onActivityResult: " + date.toString());
             crime.setDate(date);
@@ -58,7 +58,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        CrimeLab.getInstance().saveCrimes();
+        CrimeLab.getInstance(getActivity()).saveCrimes();
     }
 
     @Override
@@ -126,6 +126,6 @@ public class CrimeFragment extends Fragment {
 
     private void updateDate() {
         Log.d(TAG, "updateDate: " + crime.getDate().toString());
-        dateButton.setText(DateFormat.format("dd.MM.yy",crime.getDate()));
+        dateButton.setText(DateFormat.format("MMMM dd, yyyy",crime.getDate()));
     }
 }

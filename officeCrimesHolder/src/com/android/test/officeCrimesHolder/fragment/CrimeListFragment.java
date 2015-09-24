@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.format.DateFormat;
 import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -31,7 +32,19 @@ public class CrimeListFragment extends ListFragment {
         setHasOptionsMenu(true);
         setRetainInstance(true);
         subtitleVisible = false;
-        crimesList = CrimeLab.getInstance().getAllCrimes();
+        crimesList = CrimeLab.getInstance(getActivity()).getAllCrimes();
+        CrimeAdapter crimeAdapter = new CrimeAdapter(crimesList);
+        setListAdapter(crimeAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //getActivity().setTitle(R.string.crimes_title);
+        //setHasOptionsMenu(true);
+        //setRetainInstance(true);
+        //subtitleVisible = false;
+        crimesList = CrimeLab.getInstance(getActivity()).getAllCrimes();
         CrimeAdapter crimeAdapter = new CrimeAdapter(crimesList);
         setListAdapter(crimeAdapter);
     }
@@ -40,7 +53,7 @@ public class CrimeListFragment extends ListFragment {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        //View view = super.onCreateView(inflater, parent, savedInstanceState);
+        View view = super.onCreateView(inflater, parent, savedInstanceState);
         //for the regular ListFragment ListView adding
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -48,6 +61,8 @@ public class CrimeListFragment extends ListFragment {
                 getActivity().getActionBar().setSubtitle(R.string.subtitle);
             }
         }
+        ListView listView = (ListView)view.findViewById(android.R.id.list);
+        registerForContextMenu(listView);
         return inflater.inflate(R.layout.fragment_list_crime, null);
     }
 
@@ -77,7 +92,7 @@ public class CrimeListFragment extends ListFragment {
         switch (item.getItemId()){
             case R.id.menu_item_new_crime:
                 Crime crime = new Crime();
-                CrimeLab.getInstance().addCrime(crime);
+                CrimeLab.getInstance(getActivity()).addCrime(crime);
                 Intent intent = new Intent(getActivity(), CrimeListActivity.class);
                 intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
                 startActivityForResult(intent, 0);
@@ -97,6 +112,30 @@ public class CrimeListFragment extends ListFragment {
         }
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        getActivity().getMenuInflater().inflate(R.menu.crime_list_item_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem menuItem) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+        int position = info.position;
+        CrimeAdapter adapter = (CrimeAdapter)getListAdapter();
+        Crime crime = adapter.getItem(position);
+
+        switch (menuItem.getItemId()) {
+            case R.id.menu_item_delete_crime:
+                CrimeLab.getInstance(getActivity()).deleteCrime(crime);
+                adapter.notifyDataSetChanged();
+                return true;
+        } return super.onContextItemSelected(menuItem);
+
+
+
+
+    }
+
     private class CrimeAdapter extends ArrayAdapter<Crime> {
 
         public CrimeAdapter(List<Crime> crimesList) {
@@ -112,7 +151,7 @@ public class CrimeListFragment extends ListFragment {
             TextView titleTextView = (TextView)view.findViewById(R.id.list_item_crime_text_view_title);
             titleTextView.setText(crime.getTitle());
             TextView dateTextView = (TextView)view.findViewById(R.id.list_item_crime_text_view_date);
-            dateTextView.setText(DateFormat.format("dd.MM.yy", crime.getDate()));
+            dateTextView.setText(DateFormat.format("MMMM dd, yyyy", crime.getDate()));
             CheckBox solvedCheckBox = (CheckBox)view.findViewById(R.id.list_item_crime_checkbox);
             solvedCheckBox.setChecked(crime.getSolved());
             return view;

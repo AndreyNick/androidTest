@@ -31,6 +31,13 @@ public class Crime {
         date = new Date(System.currentTimeMillis());
     }
 
+    public Crime(JSONObject json) throws JSONException {
+        id = UUID.fromString(json.getString(ID));
+        title = json.getString(TITLE);
+        date = new Date(json.getLong(DATE));
+        solved = json.getBoolean(SOLVED);
+    }
+
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(ID, id.toString());

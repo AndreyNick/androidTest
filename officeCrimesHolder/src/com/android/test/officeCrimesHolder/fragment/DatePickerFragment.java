@@ -47,7 +47,8 @@ public class DatePickerFragment extends DialogFragment {
         datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker datePicker, int i, int i2, int i3) {
-                date = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), day).getTime();
+                date = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
+                        datePicker.getDayOfMonth()).getTime();
                 getArguments().putSerializable(EXTRA_DATE, date);
                 //we need it in case of screen rotation
             }
@@ -65,13 +66,11 @@ public class DatePickerFragment extends DialogFragment {
     }
 
     private void sendResult(int resultCode) {
-        Log.d(TAG, "Send result START ");
-        if(getTargetFragment() == null) return;
-        Fragment fragment = getTargetFragment();
-        Log.d(TAG, "getTargetFragment: "  + fragment.toString());
+        if(getTargetFragment() == null) {
+            return;
+        }
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);
-        Log.d(TAG, "Send result: " + date.toString() + "Result code: " + resultCode);
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }
