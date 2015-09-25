@@ -53,17 +53,18 @@ public class CrimeListFragment extends ListFragment {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, parent, savedInstanceState);
-        //for the regular ListFragment ListView adding
+        View view = inflater.inflate(R.layout.fragment_list_crime, null);
+        ListView listView = (ListView)view.findViewById(android.R.id.list);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if(subtitleVisible) {
                 getActivity().getActionBar().setSubtitle(R.string.subtitle);
             }
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        } else {
+            registerForContextMenu(listView);
         }
-        ListView listView = (ListView)view.findViewById(android.R.id.list);
-        registerForContextMenu(listView);
-        return inflater.inflate(R.layout.fragment_list_crime, null);
+        return view;
     }
 
     @Override
@@ -130,10 +131,6 @@ public class CrimeListFragment extends ListFragment {
                 adapter.notifyDataSetChanged();
                 return true;
         } return super.onContextItemSelected(menuItem);
-
-
-
-
     }
 
     private class CrimeAdapter extends ArrayAdapter<Crime> {
@@ -156,6 +153,5 @@ public class CrimeListFragment extends ListFragment {
             solvedCheckBox.setChecked(crime.getSolved());
             return view;
         }
-
     }
 }
