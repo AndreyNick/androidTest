@@ -3,6 +3,7 @@ package com.android.test.officeCrimesHolder.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+
 import com.android.test.officeCrimesHolder.R;
+import com.android.test.officeCrimesHolder.activity.CrimeCameraActivity;
 import com.android.test.officeCrimesHolder.domain.Crime;
 import com.android.test.officeCrimesHolder.domain.CrimeLab;
 
@@ -33,6 +37,7 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     private Crime crime;
     private Button dateButton;
+    private ImageButton photoButton;
     private final static String TAG = "CrimeFragment";
 
     @Override
@@ -121,6 +126,20 @@ public class CrimeFragment extends Fragment {
                 crime.setSolved(b);
             }
         });
+        photoButton = (ImageButton)v.findViewById(R.id.crime_imageButton);
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CrimeCameraActivity.class);
+                startActivity(intent);
+            }
+        });
+        //In case camera is not available block this functionality
+        PackageManager packageManager = getActivity().getPackageManager();
+        if(!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA) &&
+                packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
+            photoButton.setEnabled(false);
+        }
         return v;
     }
 
