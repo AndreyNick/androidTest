@@ -1,5 +1,7 @@
 package com.android.test.officeCrimesHolder.domain;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,7 +9,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Crime {
-
+    private static final String TAG = "Crime";
     private static final String ID = "id";
     private static final String TITLE = "title";
     private static final String SOLVED = "solved";
@@ -36,10 +38,10 @@ public class Crime {
 
     public Crime(JSONObject json) throws JSONException {
         id = UUID.fromString(json.getString(ID));
-        title = json.getString(TITLE);
+        title = emptyJsonFieldSolver(json, TITLE);
         date = new Date(json.getLong(DATE));
         solved = json.getBoolean(SOLVED);
-        suspect = json.getString(SUSPECT);
+        suspect = emptyJsonFieldSolver(json, SUSPECT);
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -91,5 +93,18 @@ public class Crime {
     @Override
     public String toString() {
         return title;
+    }
+
+    private String emptyJsonFieldSolver(JSONObject json, String fieldName) {
+        String result = "";
+        try{
+            result = json.getString(fieldName);
+            Log.d(TAG, "result: " + fieldName + " - " + result);
+        } catch (JSONException ex) {
+            Log.w(TAG, ex.getMessage());
+            Log.d(TAG, "result: exception on " + fieldName);
+            return result;
+        }
+        return result;
     }
 }
