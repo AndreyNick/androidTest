@@ -44,6 +44,14 @@ public class CrimeFragment extends Fragment {
     private Button suspectButton;
     private final static String TAG = "CrimeFragment";
 
+    public static CrimeFragment newInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(CRIME_ID, crimeId);
+        CrimeFragment crimeFragment = new CrimeFragment();
+        crimeFragment.setArguments(args);
+        return crimeFragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

@@ -1,6 +1,7 @@
 package com.android.test.officeCrimesHolder.fragment;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,23 @@ public class CrimeListFragment extends ListFragment {
 
     private List<Crime> crimesList;
     private boolean subtitleVisible;
+    private Callbacks callbacks;
+
+    public interface Callbacks {
+        void onCrimeSelected(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        callbacks = (Callbacks)activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callbacks = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,9 +127,7 @@ public class CrimeListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         Crime crime = ((CrimeAdapter)getListAdapter()).getItem(position);
-        Intent intent = new Intent(getActivity(), CrimeActivity.class);
-        intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
-        startActivity(intent);
+        callbacks.onCrimeSelected(crime);
     }
 
     @Override
@@ -133,9 +149,8 @@ public class CrimeListFragment extends ListFragment {
             case R.id.menu_item_new_crime:
                 Crime crime = new Crime();
                 CrimeLab.getInstance(getActivity()).addCrime(crime);
-                Intent intent = new Intent(getActivity(), CrimeListActivity.class);
-                intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
-                startActivityForResult(intent, 0);
+                ((CrimeAdapter)getListAdapter()).notifyDataSetChanged();
+                callbacks.onCrimeSelected(crime);
                 return true;
             case R.id.menu_item_show_subtitle:
                 if(getActivity().getActionBar().getSubtitle() == null) {
