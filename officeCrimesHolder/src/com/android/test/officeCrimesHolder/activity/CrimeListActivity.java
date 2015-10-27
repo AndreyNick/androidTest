@@ -27,7 +27,7 @@ public class CrimeListActivity extends SingleFragmentActivity
     @Override
     public void onCrimeSelected(Crime crime) {
         if(findViewById(R.id.detailedFragmentContainer) == null) {
-            Intent intent = new Intent(this, CrimeActivity.class);
+            Intent intent = new Intent(this, CrimePagerActivity.class);
             intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
             startActivity(intent);
         } else {
