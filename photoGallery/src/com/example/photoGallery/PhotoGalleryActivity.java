@@ -1,15 +1,26 @@
 package com.example.photoGallery;
 
-import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 
-/**
- * Created by anni0913 on 27.10.2015.
- */
-public class PhotoGalleryActivity extends Activity {
+import java.io.IOException;
+
+public class PhotoGalleryActivity extends SingleFragmentActivity {
+
+    private static final String TAG = "PhotoGalleryActivity";
+
+    @Override
+    protected Fragment createFragment() {
+        return new PhotoGalleryFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_gallery);
     }
+
+
 }
