@@ -1,7 +1,9 @@
 package com.example.photoGallery;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +29,15 @@ public class PhotoGalleryFragment extends Fragment {
         setRetainInstance(true);
         new FetchItemsTask().execute();
 
-        pictureDownloader = new PictureDownloader<ImageView>();
+        pictureDownloader = new PictureDownloader(new Handler());
+        pictureDownloader.setListener(new PictureDownloader.Listener<ImageView>() {
+            @Override
+            public void onPictureDownloaded(ImageView imageView, Bitmap picture) {
+                if(isVisible()) {
+                    imageView.setImageBitmap(picture);
+                }
+            }
+        });
         pictureDownloader.start();
         pictureDownloader.getLooper();
         Log.i(TAG, "Background thread started");

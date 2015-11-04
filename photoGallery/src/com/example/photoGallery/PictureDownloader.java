@@ -9,6 +9,8 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 
+import com.sun.javafx.property.adapter.PropertyDescriptor;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,9 +22,20 @@ public class PictureDownloader<Token> extends HandlerThread {
     private static final int MESSAGE_DOWNLOAD = 0;
     Handler handler;
     Map<Token, String> requestMap = Collections.synchronizedMap(new HashMap<Token, String>());
+    Handler responseHandler;
+    Listener<Token> listener;
 
-    public PictureDownloader() {
+    public interface Listener<Token> {
+        void onPictureDownloaded(Token token, Bitmap picture);
+    }
+
+    public void setListener(Listener<Token> listener) {
+        this.listener = listener;
+    }
+
+    public PictureDownloader(Handler responseHandler) {
         super(TAG);
+        this.responseHandler = responseHandler;
     }
 
     public void queuePicture(Token token, String url) {
@@ -57,6 +70,16 @@ public class PictureDownloader<Token> extends HandlerThread {
             byte[] bitmapBytes = new FlickrFetchr().getUrlBytes(url);
             final Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
             Log.i(TAG, "Bitmap created");
+
+            responseHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(requestMap.get(token) != url) return;
+
+                    requestMap.remove(token);
+                    listener.onPictureDownloaded(token, bitmap);
+                }
+            });
 
         } catch (IOException e) {
             Log.e(TAG, "Error downloading image", e);
