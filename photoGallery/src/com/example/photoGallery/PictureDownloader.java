@@ -9,8 +9,6 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 
-import com.sun.javafx.property.adapter.PropertyDescriptor;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,6 +40,11 @@ public class PictureDownloader<Token> extends HandlerThread {
         Log.i(TAG, "Got an url: " + url);
         requestMap.put(token, url);
         handler.obtainMessage(MESSAGE_DOWNLOAD, token).sendToTarget();
+    }
+
+    public void clearQueue() {
+        handler.removeMessages(MESSAGE_DOWNLOAD);
+        requestMap.clear();
     }
 
     @SuppressLint("HandlerLeak")

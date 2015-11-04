@@ -58,6 +58,13 @@ public class PhotoGalleryFragment extends Fragment {
         Log.i(TAG, "Background thread destroyed");
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        pictureDownloader.clearQueue();
+
+    }
+
     void setupAdapter() {
         if(getActivity() == null || gridView == null) return;
 
@@ -82,7 +89,7 @@ public class PhotoGalleryFragment extends Fragment {
             }
 
             ImageView imageView = (ImageView)convertView.findViewById(R.id.gallery_item_imageView);
-            imageView.setImageResource(R.drawable.loading);
+            imageView.setImageResource(android.R.drawable.stat_sys_upload);
 
             GalleryItem item = getItem(position);
             pictureDownloader.queuePicture(imageView, item.getUrl());
